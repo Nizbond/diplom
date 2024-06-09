@@ -35,7 +35,7 @@ export default function Login() {
     <div className="container mx-auto flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="flex items-center flex-col justify-center space-y-4 p-4 rounded-md mt-24 shadow-md"
+        className="flex items-center flex-col justify-center space-y-4 p-4 rounded-md mt-24 shadow-2xl border border-blue-500"
       >
         <div className="flex items-center justify-center">
           <Image
@@ -44,7 +44,7 @@ export default function Login() {
             width={150}
             height={150}
             objectFit="cover"
-            className="border rounded-md shadow-md"
+            className="rounded-md shadow-md border border-blue-500"
           />
           <span className="text-3xl ml-4">ОПМ-CRM</span>
         </div>
