@@ -88,7 +88,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
             <p className="font-bold">{session?.user?.position}</p>
             <div className="flex items-center gap-x-32">
               <Image
-                src="/organisation.jpg"
+                src="/profile.jpg"
                 alt="Leader"
                 width={100}
                 height={100}
@@ -103,7 +103,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
           </div>
           <div>
             <Image
-              src="/organisation.png"
+              src="/organisation.jpg"
               alt="Moscow Logo"
               width={100}
               height={100}
