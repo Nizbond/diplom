@@ -109,10 +109,11 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
                 </p>
               </div>
               <Image
-                src="/organisation.jpg"
+                src="/profile.jpg"
                 alt="Moscow Logo"
                 width={120}
                 height={120}
+                className="shadow-md rounded-md"
               />
             </div>
           </div>
