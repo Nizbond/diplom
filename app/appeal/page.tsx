@@ -12,6 +12,15 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const statusOptions = [
   { value: "PENDING", label: "В обработке" },
@@ -24,21 +33,29 @@ const page = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [appeals, setAppeals] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     async function fetchAppeals() {
       try {
-        const response = await fetch(`/api/appeal`);
+        const response = await fetch(
+          `/api/appeal?page=${currentPage}&limit=${itemsPerPage}`
+        );
         if (!response.ok) {
           throw new Error("Не удалось получить обращение");
         }
         const data = await response.json();
-        setAppeals(data);
+        setAppeals(data.appeals);
+        setTotalPages(Math.ceil(data.total / itemsPerPage));
       } catch (error) {
         console.error("Не удалось получить обращение");
       }
     }
     fetchAppeals();
-  }, []);
+  }, [currentPage]);
+
   const handleStatus = async (id: string, newStatus: string) => {
     try {
       const response = await fetch(`/api/appeal/${id}/status`, {
@@ -61,8 +78,15 @@ const page = () => {
       console.error("Не удалось обновить");
     }
   };
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
-    <div className="max-w-[80%] container mx-auto mt-20 shadow-md border rounded-md">
+    <div className="max-w-[80%] container mx-auto mt-20 shadow-md border rounded-md p-2 border-blue-500">
       <Table>
         <TableHeader>
           <TableRow>
@@ -100,6 +124,37 @@ const page = () => {
           ))}
         </TableBody>
       </Table>
+      <Pagination className="flex items-center justify-end p-4">
+        <PaginationContent>
+          {currentPage > 1 && (
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={() => handlePageChange(currentPage - 1)}
+              />
+            </PaginationItem>
+          )}
+          {[...Array(totalPages)].map((_, i) => (
+            <PaginationItem key={i}>
+              <PaginationLink
+                href="#"
+                onClick={() => handlePageChange(i + 1)}
+                className={currentPage === i + 1 ? " bg-slate-500/5" : ""}
+              >
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          {currentPage < totalPages && (
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={() => handlePageChange(currentPage + 1)}
+              />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
       <Button onClick={() => router.push("/")} className="my-4 w-full">
         Назад
       </Button>

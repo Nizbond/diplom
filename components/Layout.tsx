@@ -17,7 +17,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
   const router = useRouter();
 
   const fetchAppeal = async () => {
-    const { data } = await axios.get("/api/appeal");
+    const { data } = await axios.get("/api/appeals");
     return data;
   };
 
@@ -52,12 +52,18 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
         <div className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer">
           <h1>Главная страница</h1>
         </div>
-        <div className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer">
-          <Link href={`/appeal`}>Обращения</Link>
-        </div>
-        <div className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer">
-          <Link href={`/users`}>Сотрудники</Link>
-        </div>
+        <Link
+          href={`/appeal`}
+          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer"
+        >
+          Обращения
+        </Link>
+        <Link
+          href={`/users`}
+          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer"
+        >
+          Сотрудники
+        </Link>
       </div>
       <div className="flex-1 p-4">
         <div className="flex flex-wrap">
@@ -84,30 +90,41 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
       </div>
       <div className="w-1/4 bg-gray-100 p-4 border flex flex-col justify-between">
         <div>
-          <div className="mb-4">
-            <p className="font-bold">{session?.user?.position}</p>
-            <div className="flex items-center gap-x-32">
-              <Image
-                src="/profile.jpg"
-                alt="Leader"
-                width={100}
-                height={100}
-                className="rounded-full"
-              />
-              <div>
-                <p>Имя: {session?.user.name}</p>
-                <p>Почта: {session?.user.email}</p>
+          <div className="bg-white p-4 rounded-md border border-blue-500 shadow-md">
+            <h1 className="font-bold text-xl mb-4">
+              {session?.user?.position}
+            </h1>
+            <div className="flex items-center justify-between">
+              <div className="space-y-3">
+                <p>
+                  <span className="font-semibold">Имя:</span>{" "}
+                  {session?.user?.name}
+                </p>
+                <p>
+                  <span className="font-semibold">Почта:</span>{" "}
+                  {session?.user?.email}
+                </p>
+                <p>
+                  Организация <br /> Правительства <br /> Москвы
+                </p>
               </div>
+              <Image
+                src="/organisation.jpg"
+                alt="Moscow Logo"
+                width={120}
+                height={120}
+              />
             </div>
-            <p>Организация Правительства Москвы</p>
           </div>
-          <div>
-            <Image
-              src="/organisation.jpg"
-              alt="Moscow Logo"
-              width={100}
-              height={100}
-            />
+          <div className="flex items-center justify-between mx-auto mt-24 max-w-[70%]">
+            <div className="p-4 bg-white shadow-md rounded-md border border-blue-500">
+              <Image
+                src="/organisation.jpg"
+                alt="Moscow Logo"
+                width={120}
+                height={120}
+              />
+            </div>
             <p>ОПМ-CRM</p>
           </div>
         </div>

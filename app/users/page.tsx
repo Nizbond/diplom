@@ -28,7 +28,7 @@ const page = () => {
   useEffect(() => {
     async function fetchAppeals() {
       try {
-        const response = await fetch(`/api/appeal`);
+        const response = await fetch(`/api/users`);
         if (!response.ok) {
           throw new Error("Не удалось получить обращение");
         }
@@ -40,28 +40,7 @@ const page = () => {
     }
     fetchAppeals();
   }, []);
-  const handleStatus = async (id: string, newStatus: string) => {
-    try {
-      const response = await fetch(`/api/appeal/${id}/status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          status: newStatus,
-        }),
-      });
-      setAppeals(
-        appeals.map((appeal) =>
-          appeal.id === id ? { ...appeal, status: newStatus } : appeal
-        )
-      );
-      toast.success("Статус обновлен");
-    } catch (error) {
-      toast.error("Статус не обновлен");
-      console.error("Не удалось обновить");
-    }
-  };
+
   return (
     <div className="max-w-[80%] container mx-auto mt-20 shadow-md border rounded-md">
       <Table>
@@ -69,38 +48,20 @@ const page = () => {
           <TableRow>
             <TableHead>ФИО</TableHead>
             <TableHead>Почта</TableHead>
-            <TableHead>Описание</TableHead>
-            <TableHead>Категория</TableHead>
-            <TableHead>Приоритет</TableHead>
-            <TableHead>Статус</TableHead>
+            <TableHead>Должность</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {appeals?.map((appeal: any) => (
-            <TableRow key={appeal.id}>
-              <TableCell>{appeal.name}</TableCell>
-              <TableCell>{appeal.email}</TableCell>
-              <TableCell>{appeal.description}</TableCell>
-              <TableCell>{appeal.category}</TableCell>
-              <TableCell>{appeal.priority}</TableCell>
-              <TableCell>
-                <select
-                  value={appeal.status ?? "PENDING"}
-                  onChange={(e) =>
-                    handleStatus(appeal.id as string, e.target.value)
-                  }
-                >
-                  {statusOptions.map((option) => (
-                    <option value={option.value} key={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </TableCell>
+          {appeals?.map((user: any) => (
+            <TableRow key={user.id}>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.position}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
       <Button onClick={() => router.push("/")} className="my-4 w-full">
         Назад
       </Button>

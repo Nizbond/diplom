@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Link } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -17,9 +16,11 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 const AppealPage = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const [appealData, setAppealData] = useState({
     name: "",
     email: "",
@@ -55,6 +56,7 @@ const AppealPage = () => {
       });
       queryClient.invalidateQueries();
       toast.success("Обращение добавлено");
+      router.back();
     },
     onError: (error) => {
       toast.error("Ошибка при добавлении обращения");
