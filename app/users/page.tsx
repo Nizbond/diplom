@@ -8,6 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,7 +23,6 @@ const statusOptions = [
 ];
 
 const page = () => {
-  const { data: session } = useSession();
   const router = useRouter();
   const [appeals, setAppeals] = useState<any[]>([]);
   useEffect(() => {

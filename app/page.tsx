@@ -6,28 +6,21 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Layout from "@/components/Layout";
 
 export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const fetchAppeal = async () => {
-    const { data } = await axios.get("/api/appeal");
-    return data;
-  };
-  const {
-    data: appealData,
-    error: appealError,
-    isLoading: appealLoading,
-  } = useQuery({
-    queryKey: ["appeal"],
-    queryFn: fetchAppeal,
-    enabled: !!session?.user?.email,
-  });
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
     }
   }, [status, router]);
+  console.log(session);
 
-  return <div>{session?.user?.name}</div>;
+  return (
+    <div>
+      <Layout session={session} />
+    </div>
+  );
 }

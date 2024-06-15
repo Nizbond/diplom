@@ -1,12 +1,11 @@
-import NextAuth, { NextAuthOptions, Session, User } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-import { JWT } from "next-auth/jwt"
-import { db } from "@/lib/db"
+import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
+import { JWT } from "next-auth/jwt";
+import { db } from "@/lib/db";
 
-
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -18,17 +17,17 @@ export const authOptions: NextAuthOptions = {
             },
             authorize: async (credentials) => {
                 if (!credentials?.email || !credentials.password) {
-                    return null
+                    return null;
                 }
 
                 const user = await db.user.findUnique({
                     where: { email: credentials.email }
-                })
+                });
 
                 if (user) {
-                    return user
+                    return user;
                 } else {
-                    return null
+                    return null;
                 }
             }
         })
@@ -40,18 +39,20 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async session({ session, token }: { session: Session, token: JWT }) {
             if (session.user && token.id) {
-                session.user.id = token.id
+                session.user.id = token.id;
+                session.user.position = token.position;
             }
-            return session
+            return session;
         },
         async jwt({ token, user }: { token: JWT, user?: User }) {
             if (user) {
-                token.id = user.id
+                token.id = user.id;
+                token.position = user.position;
             }
-            return token
+            return token;
         }
     },
     secret: process.env.NEXTAUTH_SECRET,
-}
+};
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
