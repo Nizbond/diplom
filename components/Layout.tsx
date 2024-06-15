@@ -48,19 +48,19 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
 
   return (
     <div className="min-h-screen flex">
-      <div className="w-1/4 bg-white p-4 flex flex-col gap-y-6 rounded-md justify-between border">
-        <div className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer">
+      <div className="w-1/4 bg-white p-4 flex flex-col gap-y-6 rounded-md justify-between border border-blue-500">
+        <div className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer border border-blue-500">
           <h1>Главная страница</h1>
         </div>
         <Link
           href={`/appeal`}
-          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer"
+          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer border border-blue-500"
         >
           Обращения
         </Link>
         <Link
           href={`/users`}
-          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer"
+          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer border border-blue-500"
         >
           Сотрудники
         </Link>
@@ -68,7 +68,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
       <div className="flex-1 p-4">
         <div className="flex flex-wrap">
           <div className="w-full p-2">
-            <div className="bg-white p-4 shadow-md rounded-md">
+            <div className="bg-white p-4 shadow-md rounded-md border border-blue-500">
               <p>Обращения</p>
               <p>Всего: {appealData?.length}</p>
               <Button
@@ -80,7 +80,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
             </div>
           </div>
           <div className="w-full p-2">
-            <div className="bg-white p-4 shadow-md">
+            <div className="bg-white p-4 shadow-md rounded-md border border-blue-500">
               <p>Сотрудники</p>
               <p>Всего: {usersData?.length}</p>
               <Button variant={"default"}>Перейти</Button>
@@ -110,7 +110,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
               </div>
               <Image
                 src="/profile.jpg"
-                alt="Moscow Logo"
+                alt="Profile Logo"
                 width={120}
                 height={120}
                 className="shadow-md rounded-md"
