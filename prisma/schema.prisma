@@ -20,7 +20,7 @@ model User {
 model Appeal {
   id          String   @id @default(uuid())
   name        String
-  email       String   @unique
+  email       String  
   description String
   category    String
   priority    String

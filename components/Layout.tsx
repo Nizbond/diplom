@@ -4,7 +4,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
@@ -22,7 +22,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
   };
 
   const fetchUsers = async () => {
-    const { data } = await axios.get("/api/users");
+    const { data } = await axios.get("/api/allusers");
     return data;
   };
 
@@ -46,21 +46,29 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
     enabled: !!session?.user?.email,
   });
 
+  if (appealLoading || userLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="animate-spin w-20 h-20 text-blue-500" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex">
-      <div className="w-1/4 bg-white p-4 flex flex-col gap-y-6 rounded-md justify-between border border-blue-500">
-        <div className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer border border-blue-500">
+    <div className="min-h-screen flex flex-col md:flex-row">
+      <div className="w-full md:w-1/4 bg-white p-4 flex flex-col gap-y-6 rounded-md justify-between border">
+        <div className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-6 md:pt-24 hover:scale-105 transition cursor-pointer">
           <h1>Главная страница</h1>
         </div>
         <Link
           href={`/appeal`}
-          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer border border-blue-500"
+          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-6 md:pt-24 hover:scale-105 transition cursor-pointer"
         >
           Обращения
         </Link>
         <Link
           href={`/users`}
-          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-24 hover:scale-105 transition cursor-pointer border border-blue-500"
+          className="flex-1/4 shadow-md h-1/4 text-center rounded-md pt-6 md:pt-24 hover:scale-105 transition cursor-pointer"
         >
           Сотрудники
         </Link>
@@ -68,7 +76,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
       <div className="flex-1 p-4">
         <div className="flex flex-wrap">
           <div className="w-full p-2">
-            <div className="bg-white p-4 shadow-md rounded-md border border-blue-500">
+            <div className="bg-white p-4 shadow-md rounded-md">
               <p>Обращения</p>
               <p>Всего: {appealData?.length}</p>
               <Button
@@ -80,21 +88,23 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
             </div>
           </div>
           <div className="w-full p-2">
-            <div className="bg-white p-4 shadow-md rounded-md border border-blue-500">
+            <div className="bg-white p-4 shadow-md">
               <p>Сотрудники</p>
               <p>Всего: {usersData?.length}</p>
-              <Button variant={"default"}>Перейти</Button>
+              <Button variant={"default"} onClick={() => router.push("/users")}>
+                Перейти
+              </Button>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-1/4 bg-gray-100 p-4 border flex flex-col justify-between">
+      <div className="w-full md:w-1/4 bg-gray-100 p-4 border flex flex-col justify-between">
         <div>
           <div className="bg-white p-4 rounded-md border border-blue-500 shadow-md">
             <h1 className="font-bold text-xl mb-4">
               {session?.user?.position}
             </h1>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="space-y-3">
                 <p>
                   <span className="font-semibold">Имя:</span>{" "}
@@ -109,15 +119,15 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
                 </p>
               </div>
               <Image
-                src="/profile.jpg"
-                alt="Profile Logo"
+                src="/organisation.jpg"
+                alt="Moscow Logo"
                 width={120}
                 height={120}
-                className="shadow-md rounded-md"
+                className="mt-4 md:mt-0"
               />
             </div>
           </div>
-          <div className="flex items-center justify-between mx-auto mt-24 max-w-[70%]">
+          <div className="flex items-center justify-center mx-auto mt-12 md:mt-24 max-w-[70%]">
             <div className="p-4 bg-white shadow-md rounded-md border border-blue-500">
               <Image
                 src="/organisation.jpg"
@@ -126,7 +136,7 @@ const Layout: React.FC<ILayout> = ({ children, session }) => {
                 height={120}
               />
             </div>
-            <p>ОПМ-CRM</p>
+            <p className="ml-4">ОПМ-CRM</p>
           </div>
         </div>
         <Button
